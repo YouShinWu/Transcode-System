@@ -1,0 +1,200 @@
+version: "3.7"
+
+services:
+  master:
+    image: five_workers:latest
+    hostname: master
+    stdin_open: true
+    tty: true
+    ports:
+      - 9860:9864  #hdfs download port
+      - 8080:8080  #spark web UI port
+      - 7077:7077  #spark standalone master port
+      - 8088:8088  #yarn port
+      - 9870:9870  #hdfs port(datanode)
+      - 19888:19888
+      - 4040:4040  #spark submit port
+      - 8031:8031  #spark worker port
+      - 8040:8042  #Node manager port
+      - 18080:18080 #Spark history server port
+    volumes:
+      - VideoData:/VideoData/    
+    networks:
+      HadoopCluster:
+        ipv4_address: 172.18.0.100
+    extra_hosts:
+      - "master:172.18.0.100"
+      - "slave1:172.18.0.101"
+      - "slave2:172.18.0.102"
+      - "slave3:172.18.0.103"
+      - "slave4:172.18.0.104"
+      - "slave5:172.18.0.105"
+    privileged: true
+    deploy:
+      resources:
+        limits: 
+          cpus: "4"
+          memory: 3072M
+  slave1:
+    image: five_workers:latest
+    hostname: slave1
+    stdin_open: true
+    tty: true
+    ports:
+       - 9861:9864
+       - 9871:9870
+       - 8081:8081
+       - 19881:19888
+       - 8041:8042
+    volumes:
+      - VideoData:/VideoData/    
+    networks:
+      HadoopCluster:
+        ipv4_address: 172.18.0.101
+    extra_hosts:
+      - "master:172.18.0.100"
+      - "slave1:172.18.0.101"
+      - "slave2:172.18.0.102"
+      - "slave3:172.18.0.103"
+      - "slave4:172.18.0.104"
+      - "slave5:172.18.0.105"
+    privileged: true
+    deploy:
+      resources:
+        limits: 
+          cpus: "4"
+          memory: 10240M
+  slave2:
+    image: five_workers:latest
+    hostname: slave2
+    stdin_open: true
+    tty: true
+    ports:
+       - 9862:9864
+       - 9872:9870
+       - 8082:8081
+       - 19882:19888
+       - 8042:8042
+    volumes:
+      - VideoData:/VideoData/   
+    networks: 
+      HadoopCluster:
+        ipv4_address: 172.18.0.102
+    extra_hosts:
+      - "master:172.18.0.100"
+      - "slave1:172.18.0.101"
+      - "slave2:172.18.0.102"
+      - "slave3:172.18.0.103"
+      - "slave4:172.18.0.104"
+      - "slave5:172.18.0.105"
+    privileged: true
+    deploy:
+      resources:
+        limits: 
+          cpus: "4"
+          memory: 10240M
+  slave3:
+    image: five_workers:latest
+    hostname: slave3
+    stdin_open: true
+    tty: true
+    ports:
+       - 9863:9864
+       - 9873:9870
+       - 8083:8081
+       - 19883:19888
+       - 8043:8042
+    volumes:
+      - VideoData:/VideoData/   
+    networks:
+      HadoopCluster:
+        ipv4_address: 172.18.0.103
+    extra_hosts:
+      - "master:172.18.0.100"
+      - "slave1:172.18.0.101"
+      - "slave2:172.18.0.102"
+      - "slave3:172.18.0.103"
+      - "slave4:172.18.0.104"
+      - "slave5:172.18.0.105"
+    privileged: true
+    deploy:
+      resources:
+        limits: 
+          cpus: "4"
+          memory: 10240M
+  slave4:
+    image: five_workers:latest
+    hostname: slave4
+    stdin_open: true
+    tty: true
+    ports:
+       - 9864:9864
+       - 9874:9870
+       - 8084:8081
+       - 19884:19888
+       - 8044:8042
+    volumes:
+      - VideoData:/VideoData/    
+    networks:
+      HadoopCluster:
+        ipv4_address: 172.18.0.104
+    extra_hosts:
+      - "master:172.18.0.100"
+      - "slave1:172.18.0.101"
+      - "slave2:172.18.0.102"
+      - "slave3:172.18.0.103"
+      - "slave4:172.18.0.104"
+      - "slave5:172.18.0.105"
+    privileged: true
+    deploy:
+      resources:
+        limits: 
+          cpus: "4"
+          memory: 10240M
+  slave5:
+    image: five_workers:latest
+    hostname: slave5
+    stdin_open: true
+    tty: true
+    ports:
+       - 9865:9864
+       - 9875:9870
+       - 8085:8081
+       - 19885:19888
+       - 8045:8042
+    volumes:
+      - VideoData:/VideoData/   
+    networks:
+      HadoopCluster:
+        ipv4_address: 172.18.0.105
+    extra_hosts:
+      - "master:172.18.0.100"
+      - "slave1:172.18.0.101"
+      - "slave2:172.18.0.102"
+      - "slave3:172.18.0.103"
+      - "slave4:172.18.0.104"
+      - "slave5:172.18.0.105"
+    privileged: true
+    deploy:
+      resources:
+        limits: 
+          cpus: "4"
+          memory: 10240M
+  
+volumes:
+  VideoData:
+    external: true
+networks:
+  HadoopCluster:
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24
+          ip_range: 172.18.0.0/24
+          gateway: 172.18.0.1
+
+
+
+
+   

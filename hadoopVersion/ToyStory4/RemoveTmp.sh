@@ -1,0 +1,1 @@
+ppdsh -w master,slave1,slave2,slave3,slave4,slave5 rm -r /tmp/ToyStory4
